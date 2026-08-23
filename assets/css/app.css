@@ -776,8 +776,13 @@ ul {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+.wishlist.is-active {
+    background: #ffe4ef;
+}
+
 .wishlist.is-active svg {
     fill: var(--pink);
+    stroke: var(--pink);
 }
 
 .product-card__body {
