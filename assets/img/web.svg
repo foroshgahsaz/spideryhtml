@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" fill="none" aria-hidden="true">
+  <g stroke="#e61e25" stroke-opacity="0.18" stroke-width="1.2">
+    <ellipse cx="210" cy="40" rx="140" ry="90"/>
+    <ellipse cx="210" cy="40" rx="260" ry="170"/>
+    <ellipse cx="210" cy="40" rx="400" ry="260"/>
+    <ellipse cx="210" cy="40" rx="560" ry="360"/>
+    <path d="M210 40L-40 420M210 40L80 500M210 40L230 510M210 40L520 430M210 40L640 220M210 40L560 20M210 40L40 8M210 40L-80 160"/>
+  </g>
+</svg>
