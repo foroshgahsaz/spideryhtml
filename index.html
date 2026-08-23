@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اسپایدر شاپ | قدرت را با استایل عنکبوتی نشان بده</title>
+    <meta name="description" content="فروشگاه اسپایدر شاپ؛ پوشاک و اکسسوری با تم اسپایدرمن. فرانت استاتیک آماده انتقال به Laravel + Livewire + Filament.">
+    <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+    <a class="skip-link" href="#main">رفتن به محتوا</a>
+
+    <div class="dark-stage">
+        <!-- Blade later: <x-layout.header /> -->
+        <header
+            class="site-header"
+            x-data="siteHeader"
+            :class="{ 'is-sticky': scrolled }"
+            @scroll.window="onScroll()"
+        >
+            <div class="container topbar">
+                <a class="brand" href="index.html" aria-label="اسپایدر شاپ">
+                    <img src="assets/img/logo.svg" alt="">
+                    <span class="brand__name">اسپایدر شاپ</span>
+                </a>
+
+                <form class="search" :class="{ 'is-mobile-open': searchOpen }" role="search" action="#" method="get">
+                    <label class="sr-only" for="store-search">جستجو در فروشگاه</label>
+                    <input id="store-search" type="search" name="q" placeholder="جستجو در فروشگاه...">
+                    <button type="submit" aria-label="جستجو">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path d="M20 20l-3-3"></path>
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="topbar__actions">
+                    <button class="icon-btn" type="button" @click="searchOpen = !searchOpen" aria-label="نمایش جستجو">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path d="M20 20l-3-3"></path>
+                        </svg>
+                    </button>
+                    <a class="btn-login" href="#">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M4 20c1.5-4 14.5-4 16 0"></path>
+                        </svg>
+                        <span>ورود / ثبت نام</span>
+                    </a>
+                    <a class="icon-plain is-red" href="tel:02191000000" aria-label="تماس">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 3.8h2.7l1.3 3.6-1.8 1.3a11 11 0 0 0 5.4 5.4l1.3-1.8 3.6 1.3v2.6c0 .9-.9 1.8-1.8 1.8C10.4 18 4.8 12.4 4.8 5.6c0-.9.9-1.8 1.8-1.8Z"/></svg>
+                    </a>
+                    <a class="icon-plain" href="#offers" aria-label="سبد خرید">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 7h15l-1.6 9H8z"/><path d="M6 7 5 4H2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>
+                        <span class="cart-count">2</span>
+                    </a>
+                    <button class="icon-btn" type="button" @click="menuOpen = !menuOpen" :aria-expanded="menuOpen.toString()" aria-label="منو">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 7h16M4 12h16M4 17h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <nav class="main-nav" aria-label="منوی اصلی">
+                <div class="container">
+                    <ul class="main-nav__list">
+                        <li><a class="is-active" href="index.html">صفحه اصلی</a></li>
+                        <li><a href="#products">لیست کالاها</a></li>
+                        <li><a href="#faq">سوالی دارید؟</a></li>
+                        <li><a href="#track">پیگیری سفارش</a></li>
+                        <li><a href="#blog">بلاگ</a></li>
+                        <li><a href="#about">درباره ما</a></li>
+                        <li><a class="is-sale" href="#offers">فروش ویژه</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="mobile-drawer" x-cloak x-show="menuOpen" @click.outside="closeMenu()" x-transition>
+                <div class="container">
+                    <a href="index.html">صفحه اصلی</a>
+                    <a href="#products">لیست کالاها</a>
+                    <a href="#faq">سوالی دارید؟</a>
+                    <a href="#track">پیگیری سفارش</a>
+                    <a href="#blog">بلاگ</a>
+                    <a href="#about">درباره ما</a>
+                    <a href="#offers">فروش ویژه</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Blade later: <livewire:storefront.hero-slider /> -->
+        <section class="hero" id="main" x-data="heroSlider">
+            <div class="swiper hero-swiper" x-ref="viewport">
+                <div class="swiper-wrapper">
+                    <article class="swiper-slide hero-slide is-dark">
+                        <img src="assets/img/slide-dark.jpg" alt="کلکسیون مشکی اسپایدر شاپ">
+                        <div class="hero-slide__web" aria-hidden="true"></div>
+                        <div class="hero-slide__shade"></div>
+                        <div class="hero-slide__copy">
+                            <h1>قدرت را با استایل عنکبوتی نشان بده!</h1>
+                            <ul class="hero-points">
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4Z"/><path d="m9 12 2 2 4-4"/></svg>
+                                    </span>
+                                    <span>کیفیت بالا</span>
+                                </li>
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 7h8l1 4v8H7V11l1-4Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+                                    </span>
+                                    <span>استایل اسپایدر</span>
+                                </li>
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h11v10H3zM14 11h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg>
+                                    </span>
+                                    <span>ارسال سریع</span>
+                                </li>
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10.5h3.2a1.8 1.8 0 0 1 0 3.6H9.5"/></svg>
+                                    </span>
+                                    <span>تخفیف‌های ویژه</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="swiper-slide hero-slide is-pink">
+                        <img src="assets/img/slide-pink.jpg" alt="کلکسیون صورتی اسپایدر شاپ">
+                        <div class="hero-slide__shade"></div>
+                        <div class="hero-slide__copy">
+                            <h2>قدرت را با استایل عنکبوتی نشان بده!</h2>
+                            <ul class="hero-points">
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M9 12h6M12 9v6"/></svg>
+                                    </span>
+                                    <span>تخفیف‌های ویژه</span>
+                                </li>
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h11v10H3zM14 11h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg>
+                                    </span>
+                                    <span>ارسال سریع</span>
+                                </li>
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 20s-3-6 4-13c0 0 7 5 4 13H8Z"/></svg>
+                                    </span>
+                                    <span>استایل منحصربه‌فرد</span>
+                                </li>
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4Z"/></svg>
+                                    </span>
+                                    <span>کیفیت بالا</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="swiper-slide hero-slide is-dark">
+                        <img src="assets/img/slide-red.jpg" alt="کلکسیون قرمز اسپایدر شاپ">
+                        <div class="hero-slide__web" aria-hidden="true"></div>
+                        <div class="hero-slide__shade"></div>
+                        <div class="hero-slide__copy">
+                            <h2>قدرت را با استایل عنکبوتی نشان بده!</h2>
+                            <ul class="hero-points">
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4Z"/><path d="m9 12 2 2 4-4"/></svg>
+                                    </span>
+                                    <span>کیفیت بالا</span>
+                                </li>
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 7h8l1 4v8H7V11l1-4Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+                                    </span>
+                                    <span>استایل اسپایدر</span>
+                                </li>
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h11v10H3zM14 11h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg>
+                                    </span>
+                                    <span>ارسال سریع</span>
+                                </li>
+                                <li>
+                                    <span class="icon-wrap" aria-hidden="true">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10.5h3.2a1.8 1.8 0 0 1 0 3.6H9.5"/></svg>
+                                    </span>
+                                    <span>تخفیف‌های ویژه</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="hero-pagination" x-ref="dots"></div>
+        </section>
+
+        <!-- Blade later: <livewire:storefront.category-tabs /> -->
+        <section class="latest" id="products" x-data="categoryTabs">
+            <div class="container">
+                <div class="latest__head">
+                    <h2><b>جدیدترین</b> محصولات</h2>
+                    <span class="latest__line"></span>
+                    <div class="gender-tabs" role="tablist" aria-label="دسته‌بندی جنسیتی">
+                        <button type="button" role="tab" :class="{ 'is-active': gender === 'boys' }" :aria-selected="(gender === 'boys').toString()" @click="gender = 'boys'">پسرانه</button>
+                        <button type="button" role="tab" :class="{ 'is-active': gender === 'girls' }" :aria-selected="(gender === 'girls').toString()" @click="gender = 'girls'">دخترانه</button>
+                    </div>
+                </div>
+
+                <div class="cat-wrap">
+                    <button class="cat-arrow" type="button" @click="prev()" aria-label="قبلی">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 6 6 6-6 6"/></svg>
+                    </button>
+
+                    <div class="category-rail" x-ref="boys" x-show="gender === 'boys'" role="tabpanel">
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-bags.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>کیف‌ها</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-caps.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>کلاه کپ</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-glasses.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>عینک آفتابی</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-general.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>عمومی</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-watches.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>ساعت‌ها</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-tshirts.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>تی‌شرت‌ها</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-mens.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>استایل مردانه</strong>
+                        </a>
+                    </div>
+
+                    <div class="category-rail" x-ref="girls" x-show="gender === 'girls'" x-cloak role="tabpanel">
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-girls-bags.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>کیف‌ها</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-girls-hoodie.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>هودی</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-girls-glasses.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>عینک آفتابی</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-girls-general.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>عمومی</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-girls-watches.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>ساعت‌ها</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-girls-tshirts.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>تی‌شرت‌ها</strong>
+                        </a>
+                        <a class="category-item" href="#offers">
+                            <span class="category-item__avatar">
+                                <img src="assets/img/cat-girls-style.jpg" alt="">
+                                <img class="category-item__badge" src="assets/img/spider-badge.svg" alt="">
+                            </span>
+                            <strong>استایل زنانه</strong>
+                        </a>
+                    </div>
+
+                    <button class="cat-arrow" type="button" @click="next()" aria-label="بعدی">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 6-6 6 6 6"/></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="stage-curve">
+            <svg viewBox="0 0 1440 92" preserveAspectRatio="none" aria-hidden="true">
+                <path fill="#fdf2f7" d="M0,18 C240,92 480,92 720,48 C960,8 1200,8 1440,48 L1440,92 L0,92 Z"></path>
+            </svg>
+            <a class="stage-curve__btn" href="#offers" aria-label="ادامه صفحه">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <main>
+        <!-- Blade later: <livewire:storefront.amazing-offers /> -->
+        <section class="offers" id="offers" x-data="productRail">
+            <div class="container offers__row">
+                <div class="offers-intro">
+                    <img src="assets/img/spider-mark.svg" alt="">
+                    <h2>پیشنهادات<br>شگفت‌انگیز</h2>
+                    <a class="btn-view-all" href="#">مشاهده همه</a>
+                </div>
+
+                <div class="offer-rail" x-ref="scroller">
+                    <article class="product-card">
+                        <div class="product-card__media">
+                            <img src="assets/img/product-hoodie-pink.jpg" alt="هودی دخترانه صورتی">
+                            <button class="wishlist" type="button" x-data="wishlistButton" @click="toggle()" :class="{ 'is-active': liked }" aria-label="افزودن به علاقه‌مندی">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.5-8.2C.8 9.8 2.2 6 6 6c2 0 3.2 1 4 2 0.8-1 2-2 4-2 3.8 0 5.2 3.8 3.5 6.8C19 16.4 12 21 12 21Z"/></svg>
+                            </button>
+                        </div>
+                        <div class="product-card__body">
+                            <h3 class="product-card__title">هودی دخترانه صورتی اسپایدر</h3>
+                            <div class="price-row">
+                                <div class="price">
+                                    <span class="price__old">۱٬۲۸۰٬۰۰۰ تومان</span>
+                                    <span class="price__now">۱٬۲۲۰٬۰۰۰ تومان</span>
+                                </div>
+                                <span class="discount-badge">۴٪</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="product-card__media">
+                            <img src="assets/img/product-watch.jpg" alt="ساعت اسپایدر">
+                            <button class="wishlist" type="button" x-data="wishlistButton" @click="toggle()" :class="{ 'is-active': liked }" aria-label="افزودن به علاقه‌مندی">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.5-8.2C.8 9.8 2.2 6 6 6c2 0 3.2 1 4 2 0.8-1 2-2 4-2 3.8 0 5.2 3.8 3.5 6.8C19 16.4 12 21 12 21Z"/></svg>
+                            </button>
+                        </div>
+                        <div class="product-card__body">
+                            <h3 class="product-card__title">ساعت مچی طرح عنکبوت</h3>
+                            <div class="price-row">
+                                <div class="price">
+                                    <span class="price__old">۲٬۴۵۰٬۰۰۰ تومان</span>
+                                    <span class="price__now">۱٬۹۶۰٬۰۰۰ تومان</span>
+                                </div>
+                                <span class="discount-badge">۲۰٪</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="product-card__media">
+                            <img src="assets/img/product-cap.jpg" alt="کلاه کپ اسپایدر">
+                            <button class="wishlist" type="button" x-data="wishlistButton" @click="toggle()" :class="{ 'is-active': liked }" aria-label="افزودن به علاقه‌مندی">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.5-8.2C.8 9.8 2.2 6 6 6c2 0 3.2 1 4 2 0.8-1 2-2 4-2 3.8 0 5.2 3.8 3.5 6.8C19 16.4 12 21 12 21Z"/></svg>
+                            </button>
+                        </div>
+                        <div class="product-card__body">
+                            <h3 class="product-card__title">کلاه کپ مشکی اسپایدر</h3>
+                            <div class="price-row">
+                                <div class="price">
+                                    <span class="price__old">۴۸۰٬۰۰۰ تومان</span>
+                                    <span class="price__now">۳۸۴٬۰۰۰ تومان</span>
+                                </div>
+                                <span class="discount-badge">۲۰٪</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="product-card__media">
+                            <img src="assets/img/product-hoodie-black.jpg" alt="هودی مشکی اسپایدر">
+                            <button class="wishlist" type="button" x-data="wishlistButton" @click="toggle()" :class="{ 'is-active': liked }" aria-label="افزودن به علاقه‌مندی">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.5-8.2C.8 9.8 2.2 6 6 6c2 0 3.2 1 4 2 0.8-1 2-2 4-2 3.8 0 5.2 3.8 3.5 6.8C19 16.4 12 21 12 21Z"/></svg>
+                            </button>
+                        </div>
+                        <div class="product-card__body">
+                            <h3 class="product-card__title">هودی مردانه اسپایدر مشکی</h3>
+                            <div class="price-row">
+                                <div class="price">
+                                    <span class="price__old">۱٬۴۵۰٬۰۰۰ تومان</span>
+                                    <span class="price__now">۱٬۱۶۰٬۰۰۰ تومان</span>
+                                </div>
+                                <span class="discount-badge">۲۰٪</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="product-card__media">
+                            <img src="assets/img/product-sneakers.jpg" alt="کفش اسپرت قرمز">
+                            <button class="wishlist" type="button" x-data="wishlistButton" @click="toggle()" :class="{ 'is-active': liked }" aria-label="افزودن به علاقه‌مندی">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.5-8.2C.8 9.8 2.2 6 6 6c2 0 3.2 1 4 2 0.8-1 2-2 4-2 3.8 0 5.2 3.8 3.5 6.8C19 16.4 12 21 12 21Z"/></svg>
+                            </button>
+                        </div>
+                        <div class="product-card__body">
+                            <h3 class="product-card__title">کفش اسپرت قرمز عنکبوتی</h3>
+                            <div class="price-row">
+                                <div class="price">
+                                    <span class="price__old">۲٬۱۰۰٬۰۰۰ تومان</span>
+                                    <span class="price__now">۱٬۷۸۵٬۰۰۰ تومان</span>
+                                </div>
+                                <span class="discount-badge">۱۵٪</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card">
+                        <div class="product-card__media">
+                            <img src="assets/img/product-tee.jpg" alt="تیشرت سفید اسپایدر">
+                            <button class="wishlist" type="button" x-data="wishlistButton" @click="toggle()" :class="{ 'is-active': liked }" aria-label="افزودن به علاقه‌مندی">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.5-8.2C.8 9.8 2.2 6 6 6c2 0 3.2 1 4 2 0.8-1 2-2 4-2 3.8 0 5.2 3.8 3.5 6.8C19 16.4 12 21 12 21Z"/></svg>
+                            </button>
+                        </div>
+                        <div class="product-card__body">
+                            <h3 class="product-card__title">تی‌شرت سفید طرح عنکبوت</h3>
+                            <div class="price-row">
+                                <div class="price">
+                                    <span class="price__old">۶۹۰٬۰۰۰ تومان</span>
+                                    <span class="price__now">۵۵۲٬۰۰۰ تومان</span>
+                                </div>
+                                <span class="discount-badge">۲۰٪</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="about">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <a class="brand" href="index.html">
+                    <img src="assets/img/logo.svg" alt="">
+                    <span class="brand__name">اسپایدر شاپ</span>
+                </a>
+                <p>فروشگاه تخصصی پوشاک و اکسسوری با تم اسپایدر. این فرانت استاتیک است تا بعداً بدون بازنویسی UI به Laravel، Livewire و Filament منتقل شود.</p>
+            </div>
+            <div>
+                <h3>دسترسی سریع</h3>
+                <a href="index.html">صفحه اصلی</a>
+                <a href="#products">لیست کالاها</a>
+                <a href="#offers">فروش ویژه</a>
+            </div>
+            <div id="faq">
+                <h3>پشتیبانی</h3>
+                <a href="#">سوالات متداول</a>
+                <a href="#track">پیگیری سفارش</a>
+                <a href="#">بازگشت کالا</a>
+            </div>
+            <div id="track">
+                <h3>تماس</h3>
+                <a href="tel:02191000000">۰۲۱-۹۱۰۰۰۰۰۰</a>
+                <a href="mailto:hello@spidershop.ir">hello@spidershop.ir</a>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <span>© ۱۴۰۵ اسپایدر شاپ. همه حقوق محفوظ است.</span>
+            <span>آماده انتقال به Laravel + Livewire + Filament</span>
+        </div>
+    </footer>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script defer src="assets/js/app.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+</body>
+</html>
